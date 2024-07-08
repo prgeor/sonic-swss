@@ -5857,11 +5857,14 @@ bool PortsOrch::initializePort(Port &port)
         return false;
     }
 
-    /* initialize port admin speed */
-    if (!isAutoNegEnabled(port.m_port_id) && !getPortSpeed(port.m_port_id, port.m_speed))
+    /* initialize Operational speed */
+    if (!getPortOperSpeed(port, port.m_speed))
     {
-        SWSS_LOG_ERROR("Failed to get initial port admin speed %d", port.m_speed);
-        return false;
+        SWSS_LOG_WARN("Failed to get operational speed for port:%s", port.m_alias.c_str());
+    }
+    else
+    {
+        SWSS_LOG_INFO("Port %s speed is %d", port.m_alias.c_str(), port.m_speed);
     }
 
     /* initialize port mtu */
